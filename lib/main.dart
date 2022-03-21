@@ -50,7 +50,7 @@ class MyHomePage extends StatelessWidget {
           children: [
             Center(
               child: TextButton(
-                child: const Text('Generate file'),
+                child: const Text('Generate and Share PDF'),
                 onPressed: () async {
                   final pdf = pw.Document();
                   pdf.addPage(pw.Page(
@@ -78,10 +78,6 @@ class MyHomePage extends StatelessWidget {
                       } else {
                         storageDir = await getApplicationDocumentsDirectory();
                       }
-
-                      print(
-                          'Permission granted: ${await Permission.storage.isGranted}');
-
                       File file = File('${storageDir.path}/someRandom.pdf');
 
                       await file.writeAsBytes(await pdf.save());
@@ -102,12 +98,6 @@ class MyHomePage extends StatelessWidget {
                 },
               ),
             ),
-            Center(
-              child: TextButton(
-                child: const Text('Share file'),
-                onPressed: () async {},
-              ),
-            )
           ],
         ));
   }
