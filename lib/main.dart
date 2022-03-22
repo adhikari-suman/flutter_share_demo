@@ -61,35 +61,38 @@ class MyHomePage extends StatelessWidget {
                   final Directory storageDir;
 
                   try {
-                    if (!await Permission.storage.isGranted) {
-                      await Permission.storage.request();
-                    }
+                    // if (!await Permission.storage.isGranted) {
+                    //   await Permission.storage.request();
+                    // }
 
-                    if (await Permission.storage.isGranted) {
-                      if (Platform.isAndroid) {
-                        final externalStorage =
-                            await getExternalStorageDirectory();
+                    // if (await Permission.storage.isGranted) {
+                    // if (Platform.isAndroid) {
+                    //   final externalStorage = await getTemporaryDirectory();
+                    //
+                    //   if (externalStorage != null) {
+                    //     storageDir = externalStorage;
+                    //   } else {
+                    //     storageDir = await getApplicationDocumentsDirectory();
+                    //   }
+                    // } else {
+                    //   storageDir = await getApplicationDocumentsDirectory();
+                    // }
 
-                        if (externalStorage != null) {
-                          storageDir = externalStorage;
-                        } else {
-                          storageDir = await getApplicationDocumentsDirectory();
-                        }
-                      } else {
-                        storageDir = await getApplicationDocumentsDirectory();
-                      }
-                      File file = File('${storageDir.path}/someRandom.pdf');
+                    storageDir = await getApplicationDocumentsDirectory();
+                    File file = File('${storageDir.path}/someRandom.pdf');
 
-                      await file.writeAsBytes(await pdf.save());
+                    await file.writeAsBytes(await pdf.save());
 
-                      print(file.path);
-                      print('File exists: ${await file.exists()}');
+                    print(file.absolute.path);
+                    print('File exists: ${await file.exists()}');
 
-                      Share.shareFiles([file.path], subject: 'Shared file');
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Permission denied')));
-                    }
+                    Share.shareFiles([file.path],
+                        subject: 'Shared file',
+                        sharePositionOrigin: const Rect.fromLTRB(0, 0, 0, 0));
+                    // } else {
+                    //   ScaffoldMessenger.of(context).showSnackBar(
+                    //       const SnackBar(content: Text('Permission denied')));
+                    // }
                   } on PlatformException catch (ex) {
                     print(ex);
                   } catch (ex) {
